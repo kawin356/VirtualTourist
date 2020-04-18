@@ -22,6 +22,10 @@ class LoadingViewController: UIViewController {
             if !UserDefaults.standard.bool(forKey: "isFirstLaunch") {
                 self.performSegue(withIdentifier: K.Segue.onboardingPage, sender: nil)
             } else {
+                let viewController = UIStoryboard(name: K.StoryboardID.main, bundle: nil).instantiateViewController(identifier: K.StoryboardID.mapMain)
+                let sceneDelegate = self.view.window?.windowScene?.delegate as! SceneDelegate
+                let window = sceneDelegate.window
+                window?.rootViewController = viewController
             }
         }
     }

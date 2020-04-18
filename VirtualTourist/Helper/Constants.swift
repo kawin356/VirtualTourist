@@ -17,7 +17,7 @@ struct K {
         static let mainMap = ""
     }
     struct StoryboardID {
-        static let main = "main"
+        static let main = "Main"
         static let mapMain = "mapMainController"
     }
 }

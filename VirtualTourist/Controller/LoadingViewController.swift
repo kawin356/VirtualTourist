@@ -14,6 +14,9 @@ class LoadingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndecator.startAnimating()
+        checkFirstRunningApp(interval: 1)
+        
     }
     
     func checkFirstRunningApp(interval: TimeInterval) {
@@ -26,6 +29,7 @@ class LoadingViewController: UIViewController {
                 let sceneDelegate = self.view.window?.windowScene?.delegate as! SceneDelegate
                 let window = sceneDelegate.window
                 window?.rootViewController = viewController
+                self.activityIndecator.stopAnimating()
             }
         }
     }

@@ -24,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if !UserDefaults.standard.bool(forKey: "isFirstLaunch") {
             UserDefaults.standard.set(true, forKey: "isFirstLaunch")
         }
+        //Set temp for check
+        UserDefaults.standard.set(false, forKey: "isFirstLaunch")
     }
 
     // MARK: UISceneSession Lifecycle

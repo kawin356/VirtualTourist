@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Wtr-h7-rNl">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Wtr-h7-rNl">
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -116,6 +116,9 @@
                                 <state key="normal" title="Getting Start">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <segue destination="XIx-YO-BYs" kind="show" id="PYc-Ly-c3U"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -143,34 +146,47 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="167" y="138"/>
+            <point key="canvasLocation" x="94" y="138"/>
         </scene>
-        <!--View Controller-->
+        <!--Map Main View Controller-->
         <scene sceneID="ICd-t4-kCT">
             <objects>
-                <viewController id="XIx-YO-BYs" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mapMainController" modalPresentationStyle="fullScreen" id="XIx-YO-BYs" customClass="MapMainViewController" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ouV-p8-qu2">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maps" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="894-BE-meT">
-                                <rect key="frame" x="186" y="443" width="42" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="j0o-PI-VyU">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outlet property="delegate" destination="XIx-YO-BYs" id="SP9-qV-VzR"/>
+                                    <outletCollection property="gestureRecognizers" destination="mPS-gK-DLL" appends="YES" id="bci-hA-wfc"/>
+                                </connections>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="894-BE-meT" firstAttribute="centerX" secondItem="2Sp-2B-4i5" secondAttribute="centerX" id="N18-qH-4G3"/>
-                            <constraint firstItem="894-BE-meT" firstAttribute="centerY" secondItem="2Sp-2B-4i5" secondAttribute="centerY" id="yHw-8y-LXU"/>
+                            <constraint firstItem="j0o-PI-VyU" firstAttribute="leading" secondItem="2Sp-2B-4i5" secondAttribute="leading" id="IW3-D2-kxd"/>
+                            <constraint firstItem="j0o-PI-VyU" firstAttribute="top" secondItem="ouV-p8-qu2" secondAttribute="top" id="Q8D-lt-aaq"/>
+                            <constraint firstItem="2Sp-2B-4i5" firstAttribute="trailing" secondItem="j0o-PI-VyU" secondAttribute="trailing" id="aL9-RG-CRR"/>
+                            <constraint firstAttribute="bottom" secondItem="j0o-PI-VyU" secondAttribute="bottom" id="r4i-5M-gpQ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2Sp-2B-4i5"/>
                     </view>
+                    <navigationItem key="navigationItem" id="t7i-NO-9ko"/>
+                    <connections>
+                        <outlet property="mapView" destination="j0o-PI-VyU" id="KJt-Yy-dHx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RFf-jR-cEJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="mPS-gK-DLL">
+                    <connections>
+                        <action selector="longPressed:" destination="XIx-YO-BYs" id="xKA-yb-WTz"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="878" y="138"/>
+            <point key="canvasLocation" x="876.81159420289862" y="137.94642857142856"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="7pd-3o-it1">

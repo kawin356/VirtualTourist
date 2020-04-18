@@ -10,20 +10,27 @@ import UIKit
 import MapKit
 import CoreData
 
-class MapMainViewController: UIViewController, MKMapViewDelegate {
+class MapMainViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     var pins: [Pin] = []
+    
+    var selectedPinCoordinate: CLLocationCoordinate2D?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setCameraLocation()
+        reloadPin()
+    }
     
     fileprivate func setCameraLocation() {
         let lat = CLLocationDegrees(exactly: 13.736717)
         let long = CLLocationDegrees(exactly: 100.523186)
         
-        let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2DMake(lat!, long!)
-        let span = MKCoordinateSpan(latitudeDelta: 0.3, longitudeDelta: 0.3)
-        let region = MKCoordinateRegion(center: coordinate, span: span)
-        self.mapView.setRegion(region, animated: true)
+        let location = CLLocation(latitude: lat!, longitude: long!)
+        mapView.centerToLocation(location, regionRadius: 10000)
     }
     
     fileprivate func reloadPin() {
@@ -50,18 +57,11 @@ class MapMainViewController: UIViewController, MKMapViewDelegate {
        
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setCameraLocation()
-        reloadPin()
-    }
-    
+//MARK: - Add Remove Pin
     fileprivate func pinOnSelectedLocation(_ sender: UILongPressGestureRecognizer) {
         if sender.state != UIGestureRecognizer.State.began {
             return
         }
-        
-        print("long Pressed")
         
         // Get the coordinates of the point you pressed long.
         let location = sender.location(in: mapView)
@@ -75,20 +75,49 @@ class MapMainViewController: UIViewController, MKMapViewDelegate {
         // Set the coordinates.
         myPin.coordinate = myCoordinate
         
+        myPin.title = "PIN"
+        
         // Added pins to MapView.
         mapView.addAnnotation(myPin)
         
         let pin = Pin(context: DataController.shared.viewContext)
         pin.lat = myPin.coordinate.latitude
         pin.long = myPin.coordinate.longitude
-//        DataController.saveContext()
-        try? DataController.shared.viewContext.save()
+        DataController.saveContext()
     }
     
+    
+    fileprivate func removePinInCoreData(_ view: MKAnnotationView) {
+        let pinLocationToRemove = view.annotation?.coordinate
+        
+        for pin in pins {
+            if pinLocationToRemove?.longitude == pin.long &&
+                pinLocationToRemove?.latitude == pin.lat {
+                DataController.shared.viewContext.delete(pin)
+            }
+        }
+        DataController.saveContext()
+    }
+    
+//MARK: - IBAction
     @IBAction func longPressed(_ sender: UILongPressGestureRecognizer) {
-        pinOnSelectedLocation(sender)
+        if segmentedControl.selectedSegmentIndex == 0 {
+            pinOnSelectedLocation(sender)
+        }
     }
     
+//MARK: - Prepare for Segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == K.Segue.mapImageCollection {
+            let vc = segue.destination as! MapImageViewController
+            vc.coordinate = selectedPinCoordinate
+        }
+    }
+    
+}
+
+//MARK: - Map Delegate
+extension MapMainViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseId = "pin"
@@ -99,6 +128,7 @@ class MapMainViewController: UIViewController, MKMapViewDelegate {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
             pinView!.pinTintColor = .red
+            pinView!.animatesDrop = true
             pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         }
         else {
@@ -107,5 +137,20 @@ class MapMainViewController: UIViewController, MKMapViewDelegate {
         
         return pinView
     }
+
     
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if segmentedControl.selectedSegmentIndex == 0 {
+            guard let lat = view.annotation?.coordinate.latitude,
+            let long = view.annotation?.coordinate.longitude else {
+                return
+            }
+            selectedPinCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            performSegue(withIdentifier: K.Segue.mapImageCollection, sender: nil)
+        } else {
+            mapView.removeAnnotation(view.annotation!)
+            
+            removePinInCoreData(view)
+        }
+    }
 }

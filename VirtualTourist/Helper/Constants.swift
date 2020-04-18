@@ -14,7 +14,7 @@ struct K {
     }
     struct Segue {
         static let onboardingPage = "onboardingPage"
-        static let mainMap = ""
+        static let mapImageCollection = "imageCollection"
     }
     struct StoryboardID {
         static let main = "Main"

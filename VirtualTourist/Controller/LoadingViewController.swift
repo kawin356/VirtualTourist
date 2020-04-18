@@ -1,0 +1,28 @@
+//
+//  LoadingViewController.swift
+//  VirtualTourist
+//
+//  Created by Kittikawin Sontinarakul on 18/4/2563 BE.
+//  Copyright © 2563 Kittikawin Sontinarakul. All rights reserved.
+//
+
+import UIKit
+
+class LoadingViewController: UIViewController {
+    
+    @IBOutlet weak var activityIndecator: UIActivityIndicatorView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    func checkFirstRunningApp(interval: TimeInterval) {
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + interval) {
+            if !UserDefaults.standard.bool(forKey: "isFirstLaunch") {
+                self.performSegue(withIdentifier: K.Segue.onboardingPage, sender: nil)
+            } else {
+            }
+        }
+    }
+}

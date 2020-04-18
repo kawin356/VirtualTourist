@@ -16,7 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        checkFirstLaunch()
         return true
+    }
+    
+    func checkFirstLaunch() {
+        if !UserDefaults.standard.bool(forKey: "isFirstLaunch") {
+            UserDefaults.standard.set(true, forKey: "isFirstLaunch")
+        }
     }
 
     // MARK: UISceneSession Lifecycle

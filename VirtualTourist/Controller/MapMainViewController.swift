@@ -8,10 +8,13 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class MapMainViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
+    
+    var pins: [Pin] = []
     
     fileprivate func setCameraLocation() {
         let lat = CLLocationDegrees(exactly: 13.736717)
@@ -23,10 +26,34 @@ class MapMainViewController: UIViewController, MKMapViewDelegate {
         self.mapView.setRegion(region, animated: true)
     }
     
+    fileprivate func reloadPin() {
+        let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
+        
+        do {
+            pins = try DataController.shared.viewContext.fetch(fetchRequest)
+        } catch let error as NSError {
+          print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+        for pin in pins {
+            
+            let myCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: pin.lat, longitude: pin.long)
+            
+            let myPin: MKPointAnnotation = MKPointAnnotation()
+            
+            // Set the coordinates.
+            myPin.coordinate = myCoordinate
+            
+            // Added pins to MapView.
+            mapView.addAnnotation(myPin)
+        }
+       
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-                
         setCameraLocation()
+        reloadPin()
     }
     
     fileprivate func pinOnSelectedLocation(_ sender: UILongPressGestureRecognizer) {
@@ -48,14 +75,14 @@ class MapMainViewController: UIViewController, MKMapViewDelegate {
         // Set the coordinates.
         myPin.coordinate = myCoordinate
         
-        // Set the title.
-        myPin.title = "title"
-        
-        // Set subtitle.
-        myPin.subtitle = "subtitle"
-        
         // Added pins to MapView.
         mapView.addAnnotation(myPin)
+        
+        let pin = Pin(context: DataController.shared.viewContext)
+        pin.lat = myPin.coordinate.latitude
+        pin.long = myPin.coordinate.longitude
+//        DataController.saveContext()
+        try? DataController.shared.viewContext.save()
     }
     
     @IBAction func longPressed(_ sender: UILongPressGestureRecognizer) {

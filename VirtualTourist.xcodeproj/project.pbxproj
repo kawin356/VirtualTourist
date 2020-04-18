@@ -20,6 +20,7 @@
 		43435514244ABE0B00BE77DE /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43435513244ABE0B00BE77DE /* LoadingViewController.swift */; };
 		43435516244B2BF600BE77DE /* MapMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43435515244B2BF600BE77DE /* MapMainViewController.swift */; };
 		43435519244B2D5300BE77DE /* PresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43435518244B2D5300BE77DE /* PresentationManager.swift */; };
+		4343551B244B35A600BE77DE /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4343551A244B35A600BE77DE /* DataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		43435513244ABE0B00BE77DE /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		43435515244B2BF600BE77DE /* MapMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMainViewController.swift; sourceTree = "<group>"; };
 		43435518244B2D5300BE77DE /* PresentationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationManager.swift; sourceTree = "<group>"; };
+		4343551A244B35A600BE77DE /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 			children = (
 				434354F9244AAB2800BE77DE /* VirtualTourist.xcdatamodeld */,
 				4343550C244AB23B00BE77DE /* OnboardingSlide.swift */,
+				4343551A244B35A600BE77DE /* DataController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 				434354F1244AAB2800BE77DE /* AppDelegate.swift in Sources */,
 				43435519244B2D5300BE77DE /* PresentationManager.swift in Sources */,
 				43435516244B2BF600BE77DE /* MapMainViewController.swift in Sources */,
+				4343551B244B35A600BE77DE /* DataController.swift in Sources */,
 				43435514244ABE0B00BE77DE /* LoadingViewController.swift in Sources */,
 				434354F3244AAB2800BE77DE /* SceneDelegate.swift in Sources */,
 				4343550B244AB15600BE77DE /* OnboardingViewController.swift in Sources */,

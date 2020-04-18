@@ -15,11 +15,15 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
     
+    
+    
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
         settingUI()
+        
+        
     }
     
     fileprivate func settingUI() {

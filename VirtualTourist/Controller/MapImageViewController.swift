@@ -19,18 +19,47 @@ class MapImageViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     var photos: [Photo]?
+    var ImageFromCoreData: [ImageStore]?
+    var pin: Pin!
     
+    var isCoreDataHave: Bool = false
+    
+    var selectedToRemove: [Int] = []
+    
+    fileprivate func taskLoadImageFromCoreData() {
+        let fetchRequest:NSFetchRequest<ImageStore> = ImageStore.fetchRequest()
+        let predict = NSPredicate(format: "pin == %@", pin)
+        fetchRequest.predicate = predict
+        
+        do {
+            ImageFromCoreData = try DataController.shared.viewContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+        if let count = ImageFromCoreData?.count, count > 0 {
+            isCoreDataHave = true
+        } else {
+            isCoreDataHave = false
+        }
+    }
+    
+    fileprivate func addCurrentPin() {
+        let myPin: MKPointAnnotation = MKPointAnnotation()
+        myPin.coordinate = CLLocationCoordinate2D(latitude: coordinate.coordinate.latitude, longitude: coordinate.coordinate.longitude)
+        mapView.addAnnotation(myPin)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         mapView.centerToLocation(coordinate)
         
-        let myPin: MKPointAnnotation = MKPointAnnotation()
-        myPin.coordinate = CLLocationCoordinate2D(latitude: coordinate.coordinate.latitude, longitude: coordinate.coordinate.longitude)
-        mapView.addAnnotation(myPin)
+        addCurrentPin()
         
         FlickrClient.getImageFromLocation(coordinate: coordinate, completion: handlerGetImage(photos:error:))
+        
+        taskLoadImageFromCoreData()
     }
     
     func handlerGetImage(photos:[Photo]?, error: Error?) {
@@ -38,7 +67,17 @@ class MapImageViewController: UIViewController {
             return
         }
         self.photos = photos
+        checkCountPhoto()
         collectionView.reloadData()
+    }
+    
+    func checkCountPhoto() {
+        if let count = photos?.count, count == 0 {
+            let alertController = UIAlertController(title: "No Photo", message: "Try again!", preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(action)
+            show(alertController, sender: nil)
+        }
     }
 }
 
@@ -77,14 +116,36 @@ extension MapImageViewController: UICollectionViewDelegate, UICollectionViewData
             return UICollectionViewCell()
         }
         cell.activityIncicator.startAnimating()
-        FlickrClient.downloadImage(photo: (photos?[indexPath.row])!) { (photoData) in
-            DispatchQueue.main.async {
-                        cell.configImage(image: UIImage(data: photoData) ?? UIImage())
-                cell.activityIncicator.stopAnimating()
+        
+        if isCoreDataHave {
+            guard let data = ImageFromCoreData?[indexPath.row].data  else {
+                return UICollectionViewCell()
+            }
+            cell.configImage(image: UIImage(data: data) ?? UIImage())
+            cell.activityIncicator.stopAnimating()
+        } else {
+            FlickrClient.downloadImage(photo: (photos?[indexPath.row])!) { (photoData) in
+                
+                DispatchQueue.main.async {
+                            cell.configImage(image: UIImage(data: photoData) ?? UIImage())
+                    cell.activityIncicator.stopAnimating()
+                }
+                let saveImage = ImageStore(context: DataController.shared.viewContext)
+                saveImage.data = photoData
+                saveImage.pin = self.pin
+                DataController.saveContext()
             }
         }
         
-        return cell    }
+        return cell
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) {
+            cell.contentView.alpha = 0.5
+        }
+    }
     
 //MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

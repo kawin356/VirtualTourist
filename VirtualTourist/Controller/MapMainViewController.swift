@@ -75,14 +75,13 @@ class MapMainViewController: UIViewController {
         // Set the coordinates.
         myPin.coordinate = myCoordinate
         
-        myPin.title = "PIN"
-        
         // Added pins to MapView.
         mapView.addAnnotation(myPin)
         
         let pin = Pin(context: DataController.shared.viewContext)
         pin.lat = myPin.coordinate.latitude
         pin.long = myPin.coordinate.longitude
+        pins.append(pin)
         DataController.saveContext()
     }
     
@@ -113,6 +112,14 @@ class MapMainViewController: UIViewController {
         if segue.identifier == K.Segue.mapImageCollection {
             let vc = segue.destination as! MapImageViewController
             vc.coordinate = selectedPinCoordinate
+            
+            for selectedPin in pins {
+                if selectedPin.lat == selectedPinCoordinate?.coordinate.latitude &&
+                selectedPin.long == selectedPinCoordinate?.coordinate.longitude {
+                    vc.pin = selectedPin
+                }
+            }
+            
         }
     }
     
@@ -120,26 +127,6 @@ class MapMainViewController: UIViewController {
 
 //MARK: - Map Delegate
 extension MapMainViewController: MKMapViewDelegate {
-    
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let reuseId = "pin"
-        
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-
-        if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = true
-            pinView!.pinTintColor = .red
-            pinView!.animatesDrop = true
-            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-        }
-        else {
-            pinView!.annotation = annotation
-        }
-        
-        return pinView
-    }
-
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if segmentedControl.selectedSegmentIndex == 0 {

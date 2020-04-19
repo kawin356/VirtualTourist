@@ -18,13 +18,21 @@ class MapImageViewController: UIViewController {
     @IBOutlet weak var removeBarButton: UIBarButtonItem!
     
     @IBOutlet weak var collectionView: UICollectionView!
-    var photos: [Photo]?
+    var photos: [Photo] = []
     var ImageFromCoreData: [ImageStore]?
     var pin: Pin!
     
     var isCoreDataHave: Bool = false
-    
-    var selectedToRemove: [Int] = []
+        
+    var selectedPhotos: [Photo] = [] {
+        didSet {
+            if selectedPhotos.count > 0 {
+                removeBarButton.isEnabled = true
+            } else {
+                removeBarButton.isEnabled = false
+            }
+        }
+    }
     
     fileprivate func taskLoadImageFromCoreData() {
         let fetchRequest:NSFetchRequest<ImageStore> = ImageStore.fetchRequest()
@@ -52,6 +60,8 @@ class MapImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.allowsMultipleSelection = true
+        removeBarButton.isEnabled = false
         
         mapView.centerToLocation(coordinate)
         
@@ -72,7 +82,7 @@ class MapImageViewController: UIViewController {
     }
     
     func checkCountPhoto() {
-        if let count = photos?.count, count == 0 {
+        if photos.count == 0 {
             let alertController = UIAlertController(title: "No Photo", message: "Try again!", preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(action)
@@ -107,8 +117,7 @@ extension MapImageViewController: MKMapViewDelegate {
 extension MapImageViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let count = photos?.count else { return 0 }
-        return count
+        return photos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -124,7 +133,7 @@ extension MapImageViewController: UICollectionViewDelegate, UICollectionViewData
             cell.configImage(image: UIImage(data: data) ?? UIImage())
             cell.activityIncicator.stopAnimating()
         } else {
-            FlickrClient.downloadImage(photo: (photos?[indexPath.row])!) { (photoData) in
+            FlickrClient.downloadImage(photo: photos[indexPath.row]) { (photoData) in
                 
                 DispatchQueue.main.async {
                             cell.configImage(image: UIImage(data: photoData) ?? UIImage())
@@ -141,10 +150,27 @@ extension MapImageViewController: UICollectionViewDelegate, UICollectionViewData
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) {
-            cell.contentView.alpha = 0.5
+//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+//        if let cell = collectionView.cellForItem(at: indexPath) {
+//            cell.contentView.alpha = 0.5
+//        }
+//        return true
+//    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+
+        let photoPressed = photos[indexPath.row]
+        if let index = selectedPhotos.firstIndex(of: photoPressed) {
+          selectedPhotos.remove(at: index)
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        if let cell = collectionView.cellForItem(at: indexPath) {
+//            cell.contentView.alpha = 0.5
+//        }
+        let photoPressed = photos[indexPath.row]
+        selectedPhotos.append(photoPressed)
     }
     
 //MARK: - UICollectionViewDelegateFlowLayout

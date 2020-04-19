@@ -22,7 +22,7 @@ struct Page: Codable {
     let photo: [Photo]
 }
 
-struct Photo: Codable {
+struct Photo: Codable, Equatable {
     let id: String
     let owner: String
     let secret: String

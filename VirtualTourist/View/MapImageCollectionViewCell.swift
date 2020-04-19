@@ -16,4 +16,16 @@ class MapImageCollectionViewCell: UICollectionViewCell {
     func configImage(image: UIImage) {
         imageView.image = image
     }
+    
+    override var isSelected: Bool {
+      didSet {
+        imageView.layer.borderWidth = isSelected ? 10 : 0
+      }
+    }
+    
+    override func awakeFromNib() {
+      super.awakeFromNib()
+        imageView.layer.borderColor = UIColor.red.cgColor
+      isSelected = false
+    }
 }

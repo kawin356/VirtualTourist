@@ -11,6 +11,7 @@ import Foundation
 struct K {
     struct CollectionView {
         static let onboardingReuseCell = "reuseCell"
+        static let mapImageReuseCell = "mapImageCell"
     }
     struct Segue {
         static let onboardingPage = "onboardingPage"

@@ -25,6 +25,7 @@
 		43435520244B616F00BE77DE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4343551F244B616F00BE77DE /* Extensions.swift */; };
 		43435524244B61F400BE77DE /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43435523244B61F400BE77DE /* FlickrClient.swift */; };
 		43435527244B63A100BE77DE /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43435526244B63A100BE77DE /* Image.swift */; };
+		435D8A3C244C25C0007D261F /* MapImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435D8A3B244C25C0007D261F /* MapImageCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		4343551F244B616F00BE77DE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		43435523244B61F400BE77DE /* FlickrClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
 		43435526244B63A100BE77DE /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		435D8A3B244C25C0007D261F /* MapImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapImageCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				434354FE244AAB2900BE77DE /* LaunchScreen.storyboard */,
 				434354F6244AAB2800BE77DE /* Main.storyboard */,
 				43435511244AB3E400BE77DE /* OnboardingCollectionViewCell.swift */,
+				435D8A3B244C25C0007D261F /* MapImageCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				43435519244B2D5300BE77DE /* PresentationManager.swift in Sources */,
 				43435527244B63A100BE77DE /* Image.swift in Sources */,
 				43435516244B2BF600BE77DE /* MapMainViewController.swift in Sources */,
+				435D8A3C244C25C0007D261F /* MapImageCollectionViewCell.swift in Sources */,
 				4343551B244B35A600BE77DE /* DataController.swift in Sources */,
 				43435514244ABE0B00BE77DE /* LoadingViewController.swift in Sources */,
 				434354F3244AAB2800BE77DE /* SceneDelegate.swift in Sources */,

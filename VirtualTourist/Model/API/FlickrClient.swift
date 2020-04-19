@@ -58,7 +58,6 @@ class FlickrClient {
     
     class func downloadImage(photo: Photo, completion: @escaping (Data) -> Void) {
         let url = Endpoint.downloadImage(photo).url
-        print(url)
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else {
                 return

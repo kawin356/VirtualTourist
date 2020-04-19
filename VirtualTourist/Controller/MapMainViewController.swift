@@ -57,7 +57,23 @@ class MapMainViewController: UIViewController {
        
     }
     
+    fileprivate func dropImageDownload(_ myPin: MKPointAnnotation, _ pin: Pin) {
+        let locationToFetch = CLLocation(latitude: myPin.coordinate.latitude, longitude: myPin.coordinate.longitude)
+        FlickrClient.getImageFromLocation(coordinate: locationToFetch) { (object, error) in
+            guard let object = object else { return }
+            for photo in object.photos.photo {
+                FlickrClient.downloadImage(photo: photo) { (imageData) in
+                    let saveToImage = ImageStore(context: DataController.shared.viewContext)
+                    saveToImage.data = imageData
+                    saveToImage.pin = pin
+                    DataController.saveContext()
+                }
+            }
+        }
+    }
+    
 //MARK: - Add Remove Pin
+        
     fileprivate func pinOnSelectedLocation(_ sender: UILongPressGestureRecognizer) {
         if sender.state != UIGestureRecognizer.State.began {
             return
@@ -83,9 +99,10 @@ class MapMainViewController: UIViewController {
         pin.long = myPin.coordinate.longitude
         pins.append(pin)
         DataController.saveContext()
+        
+        dropImageDownload(myPin, pin)
     }
-    
-    
+        
     fileprivate func removePinInCoreData(_ view: MKAnnotation) {
         let pinLocationToRemove = view.coordinate
         

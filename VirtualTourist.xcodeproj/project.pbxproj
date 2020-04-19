@@ -47,6 +47,7 @@
 		4343551F244B616F00BE77DE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		43435523244B61F400BE77DE /* FlickrClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
 		43435526244B63A100BE77DE /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		435B6697244CDE050061ED92 /* TASK.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TASK.md; sourceTree = "<group>"; };
 		435D8A3B244C25C0007D261F /* MapImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapImageCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +81,7 @@
 		434354EF244AAB2800BE77DE /* VirtualTourist */ = {
 			isa = PBXGroup;
 			children = (
+				435B6697244CDE050061ED92 /* TASK.md */,
 				4343550E244AB2F400BE77DE /* Helper */,
 				434354F0244AAB2800BE77DE /* AppDelegate.swift */,
 				434354F2244AAB2800BE77DE /* SceneDelegate.swift */,

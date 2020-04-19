@@ -61,8 +61,8 @@ class MapImageViewController: UIViewController {
         super.viewDidLoad()
         activityIndicator.startAnimating()
         setupUI()
-        FlickrClient.getImageFromLocation(coordinate: coordinate, completion: handlerGetImage(flickrMain:error:))
         taskLoadImageFromCoreData()
+        FlickrClient.getImageFromLocation(coordinate: coordinate, completion: handlerGetImage(flickrMain:error:))
     }
 
 //MARK: - Helper

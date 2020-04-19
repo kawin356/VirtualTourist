@@ -20,15 +20,16 @@ class MapImageViewController: UIViewController {
     
     // prepare Segue
     var coordinate: CLLocation!
-    //fetch
-    var photos: [Photo] = []
-    //Coredata
-    var ImageFromCoreData: [ImageStore] = []
     var pin: Pin!
+    //fetch
+    private var photos: [Photo] = []
+    //Coredata
+    private var ImageFromCoreData: [ImageStore] = []
     
-    var numberPageFetch: Int = 1
-    var isCoreDataHave: Bool = false
-    var selectedPhotos: [ImageStore] = [] {
+    
+    private var numberPageFetch: Int = 1
+    private var isCoreDataHave: Bool = false
+    private var selectedPhotos: [ImageStore] = [] {
         didSet {
             if selectedPhotos.count > 0 {
                 removeBarButton.isEnabled = true
@@ -79,7 +80,7 @@ class MapImageViewController: UIViewController {
         addCurrentPin()
     }
     
-    func handlerGetImage(flickrMain:FlickrMain?, error: Error?) {
+    private func handlerGetImage(flickrMain:FlickrMain?, error: Error?) {
         guard let flickrMain = flickrMain else {
             return
         }
@@ -90,7 +91,7 @@ class MapImageViewController: UIViewController {
         activityIndicator.stopAnimating()
     }
     
-    func checkCountPhoto() {
+    private func checkCountPhoto() {
         if photos.count == 0 {
             let alertController = UIAlertController(title: "No Photo", message: "Try again!", preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)

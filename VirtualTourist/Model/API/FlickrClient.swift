@@ -9,9 +9,6 @@
 import Foundation
 import CoreLocation
 
-
-//https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-
 class FlickrClient {
     
     enum Endpoint {

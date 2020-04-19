@@ -17,7 +17,7 @@ class MapMainViewController: UIViewController {
     
     var pins: [Pin] = []
     
-    var selectedPinCoordinate: CLLocation?
+    private var selectedPinCoordinate: CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +28,8 @@ class MapMainViewController: UIViewController {
     fileprivate func setCameraLocation() {
         let lat = CLLocationDegrees(exactly: 13.736717)
         let long = CLLocationDegrees(exactly: 100.523186)
-        
         let location = CLLocation(latitude: lat!, longitude: long!)
+        
         mapView.centerToLocation(location, regionRadius: 10000)
     }
     

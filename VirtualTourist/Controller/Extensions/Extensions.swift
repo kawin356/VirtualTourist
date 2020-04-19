@@ -12,7 +12,7 @@ import MapKit
 extension MKMapView {
   func centerToLocation(
     _ location: CLLocation,
-    regionRadius: CLLocationDistance = 1000
+    regionRadius: CLLocationDistance = 10000
   ) {
     let coordinateRegion = MKCoordinateRegion(
       center: location.coordinate,

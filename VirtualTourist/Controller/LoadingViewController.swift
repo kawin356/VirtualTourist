@@ -23,6 +23,7 @@ class LoadingViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + interval) {
             if !UserDefaults.standard.bool(forKey: "isFirstLaunch") {
+                UserDefaults.standard.set(true, forKey: "isFirstLaunch")
                 self.performSegue(withIdentifier: K.Segue.onboardingPage, sender: nil)
             } else {
                 let viewController = UIStoryboard(name: K.StoryboardID.main, bundle: nil).instantiateViewController(identifier: K.StoryboardID.mapMain)

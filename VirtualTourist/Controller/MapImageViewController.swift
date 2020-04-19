@@ -13,18 +13,22 @@ import CoreData
 class MapImageViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
-    var coordinate: CLLocation!
     @IBOutlet weak var newCollectionBarButton: UIBarButtonItem!
     @IBOutlet weak var removeBarButton: UIBarButtonItem!
-    
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    // prepare Segue
+    var coordinate: CLLocation!
+    //fetch
     var photos: [Photo] = []
-    var ImageFromCoreData: [ImageStore]?
+    //Coredata
+    var ImageFromCoreData: [ImageStore] = []
     var pin: Pin!
     
+    var numberPageFetch: Int = 1
     var isCoreDataHave: Bool = false
-        
-    var selectedPhotos: [Photo] = [] {
+    var selectedPhotos: [ImageStore] = [] {
         didSet {
             if selectedPhotos.count > 0 {
                 removeBarButton.isEnabled = true
@@ -45,12 +49,22 @@ class MapImageViewController: UIViewController {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
         
-        if let count = ImageFromCoreData?.count, count > 0 {
+        if ImageFromCoreData.count > 0 {
             isCoreDataHave = true
         } else {
             isCoreDataHave = false
         }
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        activityIndicator.startAnimating()
+        setupUI()
+        FlickrClient.getImageFromLocation(coordinate: coordinate, completion: handlerGetImage(flickrMain:error:))
+        taskLoadImageFromCoreData()
+    }
+
+//MARK: - Helper
     
     fileprivate func addCurrentPin() {
         let myPin: MKPointAnnotation = MKPointAnnotation()
@@ -58,27 +72,22 @@ class MapImageViewController: UIViewController {
         mapView.addAnnotation(myPin)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    fileprivate func setupUI() {
         collectionView.allowsMultipleSelection = true
         removeBarButton.isEnabled = false
-        
         mapView.centerToLocation(coordinate)
-        
         addCurrentPin()
-        
-        FlickrClient.getImageFromLocation(coordinate: coordinate, completion: handlerGetImage(photos:error:))
-        
-        taskLoadImageFromCoreData()
     }
     
-    func handlerGetImage(photos:[Photo]?, error: Error?) {
-        guard let photos = photos else {
+    func handlerGetImage(flickrMain:FlickrMain?, error: Error?) {
+        guard let flickrMain = flickrMain else {
             return
         }
-        self.photos = photos
+        self.photos = flickrMain.photos.photo
+        numberPageFetch = flickrMain.photos.pages
         checkCountPhoto()
         collectionView.reloadData()
+        activityIndicator.stopAnimating()
     }
     
     func checkCountPhoto() {
@@ -88,6 +97,47 @@ class MapImageViewController: UIViewController {
             alertController.addAction(action)
             show(alertController, sender: nil)
         }
+    }
+    
+    //reset all
+    fileprivate func clearAllData() {
+        removeBarButton.isEnabled = false
+        for delete in ImageFromCoreData {
+            DataController.shared.viewContext.delete(delete)
+        }
+        DataController.saveContext()
+        photos = []
+        ImageFromCoreData = []
+        collectionView.reloadData()
+        isCoreDataHave = false
+    }
+    
+//MARK: - IBAction
+    
+    
+    @IBAction func newCollectionBarButtonPressed(_ sender: UIBarButtonItem) {
+        activityIndicator.startAnimating()
+        clearAllData()
+        FlickrClient.getImageFromLocation(coordinate: coordinate, page: Int.random(in: 1...numberPageFetch), completion: handlerGetImage(flickrMain:error:))
+    }
+    
+    @IBAction func removeImageBarButtonPressed(_ sender: UIBarButtonItem) {
+        for image in ImageFromCoreData {
+            for imageToDelete in selectedPhotos {
+                if image == imageToDelete {
+                    DataController.shared.viewContext.delete(image)
+                }
+            }
+        }
+        DataController.saveContext()
+        
+        for indexPath in collectionView.indexPathsForSelectedItems! {
+            collectionView.deselectItem(at: indexPath, animated: false)
+        }
+        
+        isCoreDataHave = true
+        taskLoadImageFromCoreData()
+        collectionView.reloadData()
     }
 }
 
@@ -114,10 +164,11 @@ extension MapImageViewController: MKMapViewDelegate {
     }
 }
 
+//MARK: - UICollection
 extension MapImageViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return isCoreDataHave ? ImageFromCoreData.count : photos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -127,21 +178,26 @@ extension MapImageViewController: UICollectionViewDelegate, UICollectionViewData
         cell.activityIncicator.startAnimating()
         
         if isCoreDataHave {
-            guard let data = ImageFromCoreData?[indexPath.row].data  else {
+            
+            guard let data = ImageFromCoreData[indexPath.row].data  else {
                 return UICollectionViewCell()
             }
             cell.configImage(image: UIImage(data: data) ?? UIImage())
             cell.activityIncicator.stopAnimating()
+            
         } else {
+            
             FlickrClient.downloadImage(photo: photos[indexPath.row]) { (photoData) in
                 
                 DispatchQueue.main.async {
                             cell.configImage(image: UIImage(data: photoData) ?? UIImage())
                     cell.activityIncicator.stopAnimating()
                 }
+                
                 let saveImage = ImageStore(context: DataController.shared.viewContext)
                 saveImage.data = photoData
                 saveImage.pin = self.pin
+                self.ImageFromCoreData.append(saveImage)
                 DataController.saveContext()
             }
         }
@@ -150,26 +206,16 @@ extension MapImageViewController: UICollectionViewDelegate, UICollectionViewData
         
     }
     
-//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-//        if let cell = collectionView.cellForItem(at: indexPath) {
-//            cell.contentView.alpha = 0.5
-//        }
-//        return true
-//    }
-    
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
 
-        let photoPressed = photos[indexPath.row]
+        let photoPressed = ImageFromCoreData[indexPath.row]
         if let index = selectedPhotos.firstIndex(of: photoPressed) {
           selectedPhotos.remove(at: index)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if let cell = collectionView.cellForItem(at: indexPath) {
-//            cell.contentView.alpha = 0.5
-//        }
-        let photoPressed = photos[indexPath.row]
+        let photoPressed = ImageFromCoreData[indexPath.row]
         selectedPhotos.append(photoPressed)
     }
     

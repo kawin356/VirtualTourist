@@ -17,13 +17,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Wtr-h7-rNl">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Wtr-h7-rNl">
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="dLE-ce-4p6"/>
                     </view>
                     <connections>
@@ -165,7 +165,8 @@
                                 </connections>
                             </mapView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="z7O-M2-WBC">
-                                <rect key="frame" x="138.5" y="831" width="137" height="32"/>
+                                <rect key="frame" x="138.5" y="64" width="137" height="32"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <segments>
                                     <segment title="Add"/>
                                     <segment title="Remove"/>
@@ -176,8 +177,8 @@
                         <constraints>
                             <constraint firstItem="j0o-PI-VyU" firstAttribute="leading" secondItem="2Sp-2B-4i5" secondAttribute="leading" id="IW3-D2-kxd"/>
                             <constraint firstItem="j0o-PI-VyU" firstAttribute="top" secondItem="ouV-p8-qu2" secondAttribute="top" id="Q8D-lt-aaq"/>
-                            <constraint firstItem="z7O-M2-WBC" firstAttribute="bottom" secondItem="2Sp-2B-4i5" secondAttribute="bottom" id="QO1-i7-ens"/>
                             <constraint firstItem="2Sp-2B-4i5" firstAttribute="trailing" secondItem="j0o-PI-VyU" secondAttribute="trailing" id="aL9-RG-CRR"/>
+                            <constraint firstItem="z7O-M2-WBC" firstAttribute="top" secondItem="2Sp-2B-4i5" secondAttribute="top" constant="20" id="fXf-LX-5I7"/>
                             <constraint firstItem="z7O-M2-WBC" firstAttribute="centerX" secondItem="j0o-PI-VyU" secondAttribute="centerX" id="jJT-vP-voa"/>
                             <constraint firstAttribute="bottom" secondItem="j0o-PI-VyU" secondAttribute="bottom" id="r4i-5M-gpQ"/>
                         </constraints>
@@ -262,19 +263,44 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aws-mM-ZtD">
                                 <rect key="frame" x="0.0" y="759" width="414" height="49"/>
                                 <items>
-                                    <barButtonItem title="New Collection" id="yRJ-IS-gbe"/>
+                                    <barButtonItem title="New Collection" id="yRJ-IS-gbe">
+                                        <connections>
+                                            <action selector="newCollectionBarButtonPressed:" destination="KEY-61-qfj" id="gGN-AY-fah"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="GPR-Y3-Ruh"/>
-                                    <barButtonItem title="Remove" id="bVh-nU-JMO"/>
+                                    <barButtonItem title="Remove" id="bVh-nU-JMO">
+                                        <connections>
+                                            <action selector="removeImageBarButtonPressed:" destination="KEY-61-qfj" id="h8l-El-kkZ"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Lya-Lx-UB2">
+                                <rect key="frame" x="157" y="386" width="100" height="70"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="WzI-oY-rkS"/>
+                                    <constraint firstAttribute="height" constant="70" id="hwk-5I-jmx"/>
+                                </constraints>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shift" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="le4-zH-j83">
+                                <rect key="frame" x="196.5" y="1" width="21" height="17.5"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="FZI-Ru-tSO" firstAttribute="trailing" secondItem="Qw6-OR-xks" secondAttribute="trailing" id="6GF-xb-Mbb"/>
                             <constraint firstItem="FZI-Ru-tSO" firstAttribute="leading" secondItem="Qw6-OR-xks" secondAttribute="leading" id="7b1-Ur-s7b"/>
                             <constraint firstItem="Aws-mM-ZtD" firstAttribute="leading" secondItem="Qw6-OR-xks" secondAttribute="leading" id="Btn-ga-6qm"/>
+                            <constraint firstItem="le4-zH-j83" firstAttribute="centerX" secondItem="vi7-i8-22a" secondAttribute="centerX" id="CpP-d5-Vrn"/>
+                            <constraint firstItem="Lya-Lx-UB2" firstAttribute="centerY" secondItem="vi7-i8-22a" secondAttribute="centerY" id="J9C-Vw-nQm"/>
+                            <constraint firstItem="Lya-Lx-UB2" firstAttribute="centerX" secondItem="vi7-i8-22a" secondAttribute="centerX" id="SBs-Mi-aRS"/>
                             <constraint firstItem="5ux-J5-drU" firstAttribute="leading" secondItem="Qw6-OR-xks" secondAttribute="leading" id="VRJ-iQ-ecO"/>
                             <constraint firstItem="Aws-mM-ZtD" firstAttribute="bottom" secondItem="Qw6-OR-xks" secondAttribute="bottom" id="YEY-Iq-GFA"/>
+                            <constraint firstItem="le4-zH-j83" firstAttribute="top" secondItem="Qw6-OR-xks" secondAttribute="top" id="guv-WR-hzX"/>
                             <constraint firstItem="5ux-J5-drU" firstAttribute="top" secondItem="FZI-Ru-tSO" secondAttribute="bottom" constant="8" id="hT9-ig-29R"/>
                             <constraint firstItem="Aws-mM-ZtD" firstAttribute="trailing" secondItem="Qw6-OR-xks" secondAttribute="trailing" id="kYr-Eh-9ma"/>
                             <constraint firstItem="FZI-Ru-tSO" firstAttribute="top" secondItem="vi7-i8-22a" secondAttribute="top" constant="20" id="kbE-6O-nbF"/>
@@ -285,6 +311,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Trf-Km-F24"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="Lya-Lx-UB2" id="gMJ-XF-54U"/>
                         <outlet property="collectionView" destination="5ux-J5-drU" id="GSL-PA-vFU"/>
                         <outlet property="mapView" destination="FZI-Ru-tSO" id="wGz-r0-bGR"/>
                         <outlet property="newCollectionBarButton" destination="yRJ-IS-gbe" id="bBt-9B-AgM"/>
@@ -295,32 +322,8 @@
             </objects>
             <point key="canvasLocation" x="1586.9565217391305" y="132.58928571428572"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="xCO-Mv-umu">
-            <objects>
-                <viewController id="se0-8K-UoE" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ul8-Hb-72q">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show image and detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UnV-Qk-uDQ">
-                                <rect key="frame" x="121" y="443" width="172.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="UnV-Qk-uDQ" firstAttribute="centerY" secondItem="Dy7-M0-ih2" secondAttribute="centerY" id="BQ4-Hj-XWY"/>
-                            <constraint firstItem="UnV-Qk-uDQ" firstAttribute="centerX" secondItem="Dy7-M0-ih2" secondAttribute="centerX" id="sjL-FH-4qa"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="Dy7-M0-ih2"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Uc0-UG-8sO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2267" y="133"/>
-        </scene>
     </scenes>
+    <resources>
+        <image name="shift" catalog="system" width="128" height="106"/>
+    </resources>
 </document>

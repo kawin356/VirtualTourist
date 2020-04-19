@@ -14,19 +14,17 @@ import CoreLocation
 
 class FlickrClient {
     
-    
-    
     enum Endpoint {
-        static let baseURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search&format=json&api_key=e9c8eb47e793130b2d4e827d294470fd&radius=10"
-        static let apiKey = "e9c8eb47e793130b2d4e827d294470fd"
+        static let baseURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search&format=json&radius=10"
+        static let apiKey = "&api_key=e9c8eb47e793130b2d4e827d294470fd"
         
-        case searchImageFromLocation(String,String)
+        case searchImageFromLocation(String,String, Int)
         case downloadImage(Photo)
         
         var stringValue: String {
             switch self {
-            case .searchImageFromLocation(let lat,let long): return Endpoint.baseURL + "&lat=\(lat)&lon=\(long)&per_page=20"
-            case .downloadImage(let photo): return "https://farm\(photo.farm).staticflickr.com/\(photo.server)/\(photo.id)_\(photo.secret)_q"
+            case .searchImageFromLocation(let lat, let long, let page): return Endpoint.baseURL + Endpoint.apiKey + "&lat=\(lat)&lon=\(long)&per_page=200&page=\(page)"
+            case .downloadImage(let photo): return "https://farm\(photo.farm).staticflickr.com/\(photo.server)/\(photo.id)_\(photo.secret)_q.jpg"
             }
         }
         
@@ -35,10 +33,10 @@ class FlickrClient {
         }
     }
     
-    class func getImageFromLocation(coordinate: CLLocation, completion: @escaping ([Photo]?, Error?) -> Void) {
+    class func getImageFromLocation(coordinate: CLLocation, page: Int = 1, completion: @escaping (FlickrMain?, Error?) -> Void) {
         let lat = String(coordinate.coordinate.latitude)
         let long = String(coordinate.coordinate.longitude)
-        let task = URLSession.shared.dataTask(with: Endpoint.searchImageFromLocation(lat, long).url) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: Endpoint.searchImageFromLocation(lat, long,page).url) { (data, response, error) in
             guard let data = data else {
                 return
             }
@@ -46,23 +44,32 @@ class FlickrClient {
             //print(String(data: newData, encoding: .utf8)!)
             let decode = JSONDecoder()
             do {
-                let object = try decode.decode(Image.self, from: newData)
-                completion(object.photos.photo, nil)
+                let object = try decode.decode(FlickrMain.self, from: newData)
+                DispatchQueue.main.async {
+                    completion(object, nil)
+                }
             } catch {
                 print(error.localizedDescription)
-                completion(nil, error)
+                DispatchQueue.main.async {
+                   completion(nil, error)
+                }
+                
             }
         }
         task.resume()
     }
     
     class func downloadImage(photo: Photo, completion: @escaping (Data) -> Void) {
-//        let task = URLSession.shared.dataTask(with: Endpoint.downloadImage(photo)) { (data, response, error) in
-//            guard let data = data else {
-//                return
-//            }
-//            completion(data)
-//        }
-//        task.
+        let url = Endpoint.downloadImage(photo).url
+        print(url)
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data else {
+                return
+            }
+            DispatchQueue.main.async {
+                completion(data)
+            }
+        }
+        task.resume()
     }
 }

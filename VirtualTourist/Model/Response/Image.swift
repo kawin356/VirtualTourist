@@ -9,7 +9,7 @@
 import Foundation
 
 
-struct Image: Codable {
+struct FlickrMain: Codable {
     let photos: Page
     let stat: String
 }

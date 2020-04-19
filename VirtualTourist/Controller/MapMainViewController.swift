@@ -17,7 +17,7 @@ class MapMainViewController: UIViewController {
     
     var pins: [Pin] = []
     
-    var selectedPinCoordinate: CLLocationCoordinate2D?
+    var selectedPinCoordinate: CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,12 +87,14 @@ class MapMainViewController: UIViewController {
     }
     
     
-    fileprivate func removePinInCoreData(_ view: MKAnnotationView) {
-        let pinLocationToRemove = view.annotation?.coordinate
+    fileprivate func removePinInCoreData(_ view: MKAnnotation) {
+        let pinLocationToRemove = view.coordinate
         
         for pin in pins {
-            if pinLocationToRemove?.longitude == pin.long &&
-                pinLocationToRemove?.latitude == pin.lat {
+            print("\(pinLocationToRemove.longitude) == \(pin.long)")
+            
+            if pinLocationToRemove.longitude == pin.long &&
+                pinLocationToRemove.latitude == pin.lat {
                 DataController.shared.viewContext.delete(pin)
             }
         }
@@ -145,12 +147,13 @@ extension MapMainViewController: MKMapViewDelegate {
             let long = view.annotation?.coordinate.longitude else {
                 return
             }
-            selectedPinCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            
+            selectedPinCoordinate = CLLocation(latitude: lat, longitude: long)
             performSegue(withIdentifier: K.Segue.mapImageCollection, sender: nil)
         } else {
-            mapView.removeAnnotation(view.annotation!)
-            
-            removePinInCoreData(view)
+            guard let coordinate = view.annotation else { return }
+            mapView.removeAnnotation(coordinate)
+            removePinInCoreData(coordinate)
         }
     }
 }

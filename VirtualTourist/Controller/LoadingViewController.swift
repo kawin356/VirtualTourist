@@ -15,7 +15,7 @@ class LoadingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         activityIndecator.startAnimating()
-        checkFirstRunningApp(interval: 1)
+        checkFirstRunningApp(interval: 0.3)
         
     }
     

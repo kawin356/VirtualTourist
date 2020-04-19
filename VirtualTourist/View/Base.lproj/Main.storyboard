@@ -212,9 +212,12 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="315" id="Dr2-FK-0jy"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="KEY-61-qfj" id="wZP-XM-S4b"/>
+                                </connections>
                             </mapView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5ux-J5-drU">
-                                <rect key="frame" x="0.0" y="323" width="414" height="441"/>
+                                <rect key="frame" x="0.0" y="323" width="414" height="436"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="PlM-JM-BfQ">
                                     <size key="itemSize" width="128" height="128"/>
@@ -234,7 +237,7 @@
                                 </cells>
                             </collectionView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aws-mM-ZtD">
-                                <rect key="frame" x="0.0" y="764" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="759" width="414" height="49"/>
                                 <items>
                                     <barButtonItem title="New Collection" id="yRJ-IS-gbe"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="GPR-Y3-Ruh"/>
@@ -258,6 +261,11 @@
                         <viewLayoutGuide key="safeArea" id="Qw6-OR-xks"/>
                     </view>
                     <navigationItem key="navigationItem" id="Trf-Km-F24"/>
+                    <connections>
+                        <outlet property="mapView" destination="FZI-Ru-tSO" id="wGz-r0-bGR"/>
+                        <outlet property="newCollectionBarButton" destination="yRJ-IS-gbe" id="bBt-9B-AgM"/>
+                        <outlet property="removeBarButton" destination="bVh-nU-JMO" id="0ZT-bL-PSv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xmk-Ha-uuE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

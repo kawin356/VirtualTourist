@@ -11,6 +11,7 @@ import Foundation
 
 struct Image: Codable {
     let photos: Page
+    let stat: String
 }
 
 struct Page: Codable {

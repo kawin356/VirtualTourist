@@ -202,9 +202,7 @@ extension MapImageViewController: UICollectionViewDelegate, UICollectionViewData
                 DataController.saveContext()
             }
         }
-        
         return cell
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

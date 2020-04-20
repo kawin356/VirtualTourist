@@ -153,6 +153,7 @@ extension MapMainViewController: MKMapViewDelegate {
             }
             
             selectedPinCoordinate = CLLocation(latitude: lat, longitude: long)
+            mapView.deselectAnnotation(view.annotation, animated: true)
             performSegue(withIdentifier: K.Segue.mapImageCollection, sender: nil)
         } else {
             guard let coordinate = view.annotation else { return }

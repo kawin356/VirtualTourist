@@ -2,13 +2,13 @@
 
 This app allows users specify travel locations around the world, and create virtual photo albums for each location. The locations and photo albums will be stored in Core Data.
 
-###View Controller scenes.
+### View Controller scenes.
 Onboarding View: Show slide image and introduce app
 Travel Locations Map View: Allows the user to drop pins around the world
 Photo Album View: Allows the users to download and edit an album for a location
 
 
-#License
+# License
 
 MIT License
 

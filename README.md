@@ -2,6 +2,9 @@
 
 This app allows users specify travel locations around the world, and create virtual photo albums for each location. The locations and photo albums will be stored in Core Data.
 
+## Feature
+When the user drops the pin on the map, start downloading the images immediately without waiting for the user to navigate to the collection view.
+
 ## View Controller scenes.
 
 Onboarding View: Show slide image and introduce app

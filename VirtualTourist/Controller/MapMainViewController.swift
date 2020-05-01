@@ -106,13 +106,10 @@ class MapMainViewController: UIViewController {
     fileprivate func removePinInCoreData(_ view: MKAnnotation) {
         let pinLocationToRemove = view.coordinate
         
-        for pin in pins {
-            print("\(pinLocationToRemove.longitude) == \(pin.long)")
-            
-            if pinLocationToRemove.longitude == pin.long &&
-                pinLocationToRemove.latitude == pin.lat {
+        for pin in pins
+            where pinLocationToRemove.latitude == pin.lat && pinLocationToRemove.longitude == pin.long {
+                //print("\(pinLocationToRemove.longitude) == \(pin.long)")
                 DataController.shared.viewContext.delete(pin)
-            }
         }
         DataController.saveContext()
     }
@@ -130,13 +127,10 @@ class MapMainViewController: UIViewController {
             let vc = segue.destination as! MapImageViewController
             vc.coordinate = selectedPinCoordinate
             
-            for selectedPin in pins {
-                if selectedPin.lat == selectedPinCoordinate?.coordinate.latitude &&
+            for selectedPin in pins where selectedPin.lat == selectedPinCoordinate?.coordinate.latitude &&
                 selectedPin.long == selectedPinCoordinate?.coordinate.longitude {
                     vc.pin = selectedPin
-                }
             }
-            
         }
     }
     
